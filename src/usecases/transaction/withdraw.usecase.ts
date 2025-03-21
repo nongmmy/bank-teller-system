@@ -21,8 +21,8 @@ export class WithdrawUsecase {
     const balance = new Decimal(account.balance);
     account.balance = balance.sub(amount).toNumber();
 
-    const updatedAccount = await this.accountRepository.updateAccount(account);
+    await this.accountRepository.updateAccount(account);
 
-    return updatedAccount;
+    return account;
   };
 }
