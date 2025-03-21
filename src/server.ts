@@ -27,14 +27,17 @@ app.use('/account', accountRoutes);
 // Global error handler (last middleware)
 app.use(errorHandler);
 
-myDataSource
-  .initialize()
-  .then(() => {
-    console.log('Data Source has been initialized!');
+if (process.env.NODE_ENV !== 'test') {
+  myDataSource
+    .initialize()
+    .then(() => {
+      console.log('Data Source has been initialized!');
 
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('Error during Data Source initialization:', err);
-  });
+      const PORT = process.env.PORT || 3000;
+      app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    })
+    .catch((err) => {
+      console.error('Error during Data Source initialization:', err);
+    });
+
+}
