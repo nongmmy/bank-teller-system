@@ -1,10 +1,9 @@
 import Decimal from 'decimal.js';
 
-import { AccountRepositoryInterface } from '../domain/repositories/accountRepository.interface';
-import { AccountNotFoundError } from '../domain/errors/accountNotFoundError';
-import { InsufficientBalanceError } from '../domain/errors/insufficientBalanceError';
+import { AccountRepositoryInterface } from '../../domain/repositories/accountRepository.interface';
+import { AccountNotFoundError } from '../../domain/errors/accountNotFoundError';
 
-export class WithdrawUsecase {
+export class DepositUsecase {
   constructor(private accountRepository: AccountRepositoryInterface) { }
 
   execute = async (accountId: string, amount: number) => {
@@ -14,12 +13,8 @@ export class WithdrawUsecase {
       throw new AccountNotFoundError(`Account with ID ${accountId} does not exist.`);
     }
 
-    if (account.balance < amount) {
-      throw new InsufficientBalanceError(`Cannot withdraw ${amount}, Balance is ${account.balance}.`);
-    }
-
     const balance = new Decimal(account.balance);
-    account.balance = balance.sub(amount).toNumber();
+    account.balance = balance.add(amount).toNumber();
 
     const updatedAccount = await this.accountRepository.updateAccount(account);
 

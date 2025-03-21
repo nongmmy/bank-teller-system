@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
-import { DepositUsecase } from '../../usecases/deposit.usecase';
-import { WithdrawUsecase } from '../../usecases/withdraw.usecase';
-import { TransferUsecase } from '../../usecases/transfer.usecase';
+import { DepositUsecase } from '../../usecases/transaction/deposit.usecase';
+import { WithdrawUsecase } from '../../usecases/transaction/withdraw.usecase';
+import { TransferUsecase } from '../../usecases/transaction/transfer.usecase';
 
 export class TransactionController {
   constructor(
     private depositUsecase: DepositUsecase,
     private withDrawUsecase: WithdrawUsecase,
     private transferUsecase: TransferUsecase
-  ) {}
+  ) { }
 
   deposit = async (req: Request, res: Response, next: NextFunction) => {
     try {

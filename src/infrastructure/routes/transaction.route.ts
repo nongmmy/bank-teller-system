@@ -1,9 +1,9 @@
 import express from 'express';
 
 import { TransactionController } from '../controller/transaction.controller';
-import { DepositUsecase } from '../../usecases/deposit.usecase';
-import { WithdrawUsecase } from '../../usecases/withdraw.usecase';
-import { TransferUsecase } from '../../usecases/transfer.usecase';
+import { DepositUsecase } from '../../usecases/transaction/deposit.usecase';
+import { WithdrawUsecase } from '../../usecases/transaction/withdraw.usecase';
+import { TransferUsecase } from '../../usecases/transaction/transfer.usecase';
 import { AccountRepository } from '../repositories/account.repository';
 import { validateRequest } from '../middlewares/validate.middleware';
 import { DepositDto } from '../controller/dto/deposit.dto';
