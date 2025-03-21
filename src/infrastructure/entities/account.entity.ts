@@ -9,7 +9,7 @@ export class AccountEntity {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   balance: number;
 
-  @ManyToOne(() => CustomerEntity, { eager: true })
+  @ManyToOne(() => CustomerEntity, { eager: true, cascade: true })
   @JoinColumn({ name: 'customerId' })
   customer: CustomerEntity;
 }
