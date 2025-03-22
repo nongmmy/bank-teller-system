@@ -158,8 +158,6 @@ describe('Transaction routes (Integration)', () => {
         amount: "aa"
       });
 
-    console.log(res.body.errors);
-
     expect(res.status).toBe(400);
     expect(res.body.errors).toContainEqual('amount must be a positive number');
 
