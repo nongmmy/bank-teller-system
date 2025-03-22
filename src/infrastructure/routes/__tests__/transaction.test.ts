@@ -130,4 +130,66 @@ describe('Transaction routes (Integration)', () => {
     expect(transferToCRes.body.toAccount.balance).toBe(200);
 
   });
+
+  it('flow -> deposit error because of account not found', async () => {
+    const accountId = 'no-acc';
+
+    const res = await request(app)
+      .post('/deposit')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        accountId,
+        amount: 100
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe(`Account with ID ${accountId} does not exist.`);
+
+  });
+
+  it('flow -> deposit error because amount should be a number', async () => {
+    const accountId = 'no-acc';
+
+    const res = await request(app)
+      .post('/deposit')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        accountId,
+        amount: "aa"
+      });
+
+    console.log(res.body.errors);
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toContainEqual('amount must be a positive number');
+
+  });
+
+  it('flow -> deposit into some account and withdraw it', async () => {
+    const createAccRes = await request(app)
+      .post('/account')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ firstName: 'testFirstName', lastName: 'testLastName', telephone: '0812345678' });
+
+    const accountId = createAccRes.body.newAccount.accountId;
+
+    const depositRes = await request(app)
+      .post('/deposit')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        accountId,
+        amount: 200
+      });
+
+    const withdrawRes = await request(app)
+      .post('/withdraw')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        accountId,
+        amount: 50
+      });
+
+    expect(withdrawRes.body.account.accountId).toBe(accountId);
+    expect(withdrawRes.body.account.balance).toBe(150);
+  });
 });
